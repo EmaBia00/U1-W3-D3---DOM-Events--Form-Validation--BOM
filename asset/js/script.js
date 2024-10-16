@@ -1,25 +1,29 @@
 const form = document.querySelector("form");
-const listContainer = document.getElementById("list-container");
+const input = document.getElementById("taskName");
+const button = document.getElementById("addButton");
+const ul = document.getElementById("list-container");
 
 form.onsubmit = function (event) {
   event.preventDefault();
 
-  const taskName = document.getElementById("taskName");
+  if (input.value.length > 0) {
+    const li = document.createElement("li");
+    li.innerText = input.value;
 
-  listContainer.innerHTML += `
-    <li>${taskName.value}<button class="deleteButton">Elimina</button></li>
-  `;
-  form.reset();
-};
+    const delateButton = document.createElement("button");
+    delateButton.innerText = "Delete";
+    delateButton.className = "deleteButton";
+    li.appendChild(delateButton);
+    ul.appendChild(li);
 
-listContainer.addEventListener("click", (event) => {
-  event.target.classList.toggle("completed");
-});
+    li.onclick = (event) => {
+      event.currentTarget.classList.toggle("completed");
+    };
 
-listContainer.addEventListener("click", (event) => {
-  const deleteButton = event.target.closest(".deleteButton");
-  if (deleteButton) {
-    const taskItem = deleteButton.closest("li");
-    listContainer.removeChild(taskItem);
+    delateButton.onclick = (event) => {
+      event.currentTarget.closest("li").remove();
+    };
+
+    input.value = ""; // Stessa cosa di fare --> form.reset(); cancella il valore dentro l'input immesso dall'utente.
   }
-});
+};
